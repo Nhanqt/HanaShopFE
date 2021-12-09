@@ -20,35 +20,44 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
-    setIsSubmit(true);
-  };
-
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValues);
+    if (isSubmit) {
+      signUp();
     }
-  }, [formErrors]);
+  };
 
   const validate = (values) => {
     const errors = {};
     if (!values.username) {
       errors.username = "Username is required!";
+      setIsSubmit(false);
+      return errors;
     }
     if (!values.password) {
       errors.password = "Password is required!";
+      setIsSubmit(false);
+      return errors;
     }
     if (values.password != values.repassword) {
       errors.repassword = "Password not match!";
+      setIsSubmit(false);
+      return errors;
     }
     if (!values.fullname) {
       errors.fullname = "Fullname is required!";
+      setIsSubmit(false);
+      return errors;
     }
     if (!values.address) {
       errors.address = "Address is required!";
+      setIsSubmit(false);
+      return errors;
     }
     if (!values.phone) {
       errors.phone = "Phone is required!";
+      setIsSubmit(false);
+      return errors;
     }
+    setIsSubmit(true);
     return errors;
   };
 
@@ -66,9 +75,10 @@ function Register() {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
+    }).catch((err) => {
+      console.log(err.response.data);
     });
-
-    result = await result.json();
+    console.log(result);
   }
 
   return (
